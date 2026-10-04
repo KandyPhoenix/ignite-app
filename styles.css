@@ -22,6 +22,7 @@
   --radius: 18px;
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --maxw: 540px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -40,11 +41,11 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body { min-height: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
   font-family: var(--font-body); font-size: 17px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-y: auto;
 }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 h1 { font-size: 1.9rem; } h2 { font-size: 1.45rem; } h3 { font-size: 1.15rem; }
@@ -55,7 +56,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 input, textarea, select { font: inherit; color: var(--fg); background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%; }
 textarea { min-height: 110px; resize: vertical; }
 .hidden { display: none !important; }
-body.sheet-open { overflow: hidden; }
 .muted { color: var(--muted); }
 .small { font-size: 0.9rem; }
 .tiny { font-size: 0.8rem; }
@@ -67,7 +67,7 @@ body.sheet-open { overflow: hidden; }
 .center { text-align: center; }
 
 #app { min-height: 100%; display: flex; flex-direction: column; }
-.screen { width: 100%; max-width: 540px; margin: 0 auto; padding-inline: 18px; padding-block: 18px 110px; flex: 1; }
+.screen { width: 100%; max-width: var(--maxw); margin: 0 auto; padding-inline: 18px; padding-block: 18px 110px; flex: 1; }
 .screen.onboard { padding-bottom: 40px; }
 
 /* top bar */
@@ -143,16 +143,16 @@ body.sheet-open { overflow: hidden; }
 
 /* bottom nav */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1.5px solid var(--line); padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
-.tabbar .inner { max-width: 540px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.tabbar .inner { max-width: var(--maxw); margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
 .tab { background: none; border: 0; display: grid; justify-items: center; gap: 2px; padding: 6px 4px; color: var(--muted); font-size: 0.72rem; font-weight: 700; cursor: pointer; border-radius: 12px; }
 .tab svg { width: 24px; height: 24px; }
 .tab.active { color: var(--accent); }
 
 /* sheets / readers */
-.sheet { position: fixed; inset: 0; z-index: 20; background: var(--bg); overflow-y: auto; }
-.sheet .inner { max-width: 540px; margin: 0 auto; padding: 14px 18px calc(40px + env(safe-area-inset-bottom, 0px)); }
-.sheet .inner > .topbar { position: sticky; top: 0; }
-.reader p { max-width: 62ch; }
+.sheet { width: 100%; max-width: var(--maxw); margin: 0 auto; padding-inline: 18px; padding-block: 8px calc(60px + env(safe-area-inset-bottom, 0px)); background: var(--bg); }
+.sheet .inner { display: grid; gap: 14px; }
+.sheet .inner > .topbar { position: sticky; top: env(safe-area-inset-top, 0px); }
+.reader p { max-width: 70ch; }
 .reader .lesson-text { display: grid; gap: 16px; font-size: 1.04rem; line-height: 1.6; }
 .keyidea { border-left: 4px solid var(--accent); padding: 8px 14px; font-family: var(--font-display); font-size: 1.15rem; line-height: 1.35; }
 .sources { font-size: 0.82rem; color: var(--muted); display: grid; gap: 8px; }
@@ -228,3 +228,23 @@ body.sheet-open { overflow: hidden; }
 .logo-mark { width: 64px; height: 64px; }
 .welcome-art { display: grid; justify-items: center; gap: 6px; padding-block: 24px 10px; }
 @media (max-width: 380px) { body { font-size: 16px; } h1 { font-size: 1.65rem; } .likert .opt { font-size: 0.7rem; } }
+
+/* wider screens: use the space */
+@media (min-width: 760px) {
+  :root { --maxw: 820px; }
+  body { font-size: 18px; }
+  h1 { font-size: 2.2rem; } h2 { font-size: 1.6rem; }
+  .task-list { grid-template-columns: repeat(3, 1fr); }
+  .task-item { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .chapters { grid-template-columns: 1fr 1fr; }
+  .list { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .reader .lesson-text { font-size: 1.1rem; }
+  .ring { width: 190px; height: 190px; }
+  .timer .clock { font-size: 4rem; }
+  .welcome-art { padding-block: 40px 14px; }
+}
+@media (min-width: 1100px) {
+  :root { --maxw: 980px; }
+  .two-col { gap: 16px; }
+}

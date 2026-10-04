@@ -118,9 +118,8 @@
       case "name": html = viewName(); break;
       default: html = viewMain();
     }
-    root.innerHTML = html;
-    if (S.ui.sheet) { var sh = document.createElement("div"); sh.className = "sheet"; sh.innerHTML = viewSheet(S.ui.sheet); root.appendChild(sh); }
-    document.body.classList.toggle("sheet-open", !!S.ui.sheet);
+    if (S.ui.sheet && S.ui.screen === "app") root.innerHTML = '<div class="sheet">' + viewSheet(S.ui.sheet) + '</div>';
+    else root.innerHTML = html;
     window.scrollTo(0, S.ui.keepScroll ? window.scrollY : 0); S.ui.keepScroll = false;
     bind();
   }
